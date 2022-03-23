@@ -1,0 +1,30 @@
+List of Components
+
+
+•	Auxiliary power supply
+
+1.	Fuse (1 ampere)
+2.	Full wave rectifier (KBL406)
+3.	Voltage regulator 7805
+4.	Voltage regulator 7812
+5.	Diodes
+6.	Capacitor (100uF)
+
+•	Voltage measurement
+
+1.	Full wave rectifier (2WIO)
+2.	Resistances (1 KΩ)
+3.	Variable resistance (0.96,2 MΩ)
+4.	Capacitor (10uF)
+
+•	Triacs Circuit 
+
+1.	Resistances (330,180, 2400Ω)
+2.	Triacs (BTA08)
+3.	Optocoupler (MOC3021)
+
+•	LCD display (2*16)
+•	Jumper wires (male and female)
+•	Transformer (250 VA)
+•	Current sensors 
+•	Microcontroller (PIC 18F4550)

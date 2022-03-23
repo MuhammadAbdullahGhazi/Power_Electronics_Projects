@@ -1,0 +1,759 @@
+Source Code
+/*
+#define ldata PORTB
+#define rs PORTD.RB7
+#define en PORTD.RB6
+*/
+#define t3 PORTC.RB5               //180
+#define t4 PORTC.RB4               //190
+#define t5 PORTD.RB1               //200
+#define t6 PORTD.RB0               //210
+#define t7 PORTC.RB2               //220
+#define t8 PORTC.RB1               //230
+#define t9 PORTC.RB0               //240
+#define t10 PORTE.RB2             //250
+#define t11 PORTE.RB1             //260
+#define t12 PORTE.RB0             //270
+
+#define buz PORTA.RB5
+
+sbit LCD_RS at RD5_bit;
+sbit LCD_EN at RD4_bit;
+sbit LCD_D4 at RC7_bit;
+sbit LCD_D5 at RC6_bit;
+sbit LCD_D6 at RD3_bit;
+sbit LCD_D7 at RD2_bit;
+
+sbitLCD_RS_Direction at TRISD5_bit;
+sbitLCD_EN_Direction at TRISD4_bit;
+sbit LCD_D4_Direction at TRISC7_bit;
+sbit LCD_D5_Direction at TRISC6_bit;
+sbit LCD_D6_Direction at TRISD3_bit;
+sbit LCD_D7_Direction at TRISD2_bit;
+
+unsignedint value;
+unsignedint value1;
+unsignedint value2;
+unsignedint value3;
+unsignedint value4;
+char *store = "000 V";
+//intsource[5];
+//char voltage[5];
+char *voltage = "00.00";
+char *source = "00.00";
+float y;
+unsignedint save=0;
+
+long temp;
+char row=2;
+char col=2;
+voidShowVoltage (intx,int y, unsigned int value)
+    {
+temp = (long)value* 5000;
+temp = temp / 1023;
+source[0] =  temp/10000;
+source[1] = (temp/1000)%10;
+source[3] = (temp/100)%10;
+source[4] = (temp/10)%10;
+
+voltage[0] = temp/10000 + 48;
+voltage[1] = (temp/1000)%10 + 48;
+voltage[3] = (temp/100)%10 + 48;
+voltage[4] = (temp/10)%10 + 48;
+
+voltage[2] = '.';
+   // Lcd_Out (x,y,voltage);
+delay_ms(10);
+
+    }
+
+void range()
+  {
+if(voltage[1]=='3')
+     {
+if(voltage[3]=='7')
+        {
+if((voltage[4]<='2')&&(voltage[4]>='0'))
+           {
+store = "221 V";
+save = 221;
+}
+ }
+else if(voltage[3]=='6')
+         {
+if((voltage[4]=='9')||(voltage[4]=='8'))
+           {
+store = "220 V";
+save = 220;
+           }
+else if((voltage[4]=='7')||(voltage[4]=='6'))
+           {
+store = "219 V";
+save = 219;
+           }
+else if((voltage[4]=='4')||(voltage[4]=='5'))
+           {
+store = "218 V";
+save = 218;
+           }
+else if((voltage[4]<='3')&&(voltage[4]>='0'))
+           {
+store = "217 V";
+save = 217;
+}
+}
+else if (voltage[3]=='5')
+         {
+if((voltage[4]<=9)&&(voltage[4]>=7))
+          {
+store = "216";
+save =216;
+          }
+else if((voltage[4]<=6)&&(voltage[4]>=4))
+          {
+store = "215";
+save =215;
+          }
+else if((voltage[4]==3)||(voltage[4]==2))
+          {
+store = "214";
+save =214;
+          }
+if((voltage[4]==1)||(voltage[4]==0))
+          {
+store = "213";
+save =213;
+          }
+  }
+else if(voltage[3]=='4')
+ {
+if((voltage[4]=='9')||(voltage[4]=='8'))
+          {
+store = "212 V";
+save = 212;
+           //Lcd_Out(row,col,"212 V");
+          }
+else if((voltage[4]<='7')&&(voltage[4]>='5'))
+          {
+store = "211 V";
+save = 211;
+           //Lcd_Out(row,col,"211 V");
+          }
+else if((voltage[4]<='4')&&(voltage[4]>='2'))
+          {
+store = "210 V";
+save = 210;
+           //Lcd_Out(row,col,"210 V");
+          }
+else if((voltage[4]=='1')||(voltage[4]=='0'))
+          {
+store = "209 V";
+save = 209;
+           //Lcd_Out(row,col,"209 V");
+          }
+        }
+else if(voltage[3]=='3')
+        {
+if((voltage[4]=='9')||(voltage[4]=='8'))
+          {
+store = "208 V";
+save = 208;
+           //Lcd_Out(row,col,"208 V");
+          }
+else if((voltage[4]=='7')||(voltage[4]=='6'))
+          {
+store = "207 V";
+save = 207;
+           //Lcd_Out(row,col,"207 V");
+          }
+else if((voltage[4]=='5')||(voltage[4]=='4'))
+          {
+store = "206 V";
+save = 206;
+           //Lcd_Out(row,col,"206 V");
+          }
+else if((voltage[4]=='3')||(voltage[4]=='2'))
+          {
+store = "205 V";
+save = 205;
+           //Lcd_Out(row,col,"205 V");
+          }
+else if((voltage[4]=='1')||(voltage[4]=='0'))
+          {
+store = "204 V";
+save = 204;
+           //Lcd_Out(row,col,"204 V");
+          }
+        }
+else if(voltage[3]=='2')
+        {
+if((voltage[4]<='9')&&(voltage[4]>='7'))
+          {
+store = "203 V";
+save = 203;
+           //Lcd_Out(row,col,"203 V");
+          }
+else if((voltage[4]<='6')&&(voltage[4]>='4'))
+          {
+store = "202 V";
+save = 202;
+           //Lcd_Out(row,col,"202 V");
+          }
+else if((voltage[4]<='3')&&(voltage[4]>='0'))
+          {
+store = "201 V";
+save = 201;
+           //Lcd_Out(row,col,"201 V");
+          }
+        }
+else if(voltage[3]=='1')
+        {
+if((voltage[4]=='9')||(voltage[4]=='8'))
+          {
+store = "200 V";
+save = 200;
+          // Lcd_Out(row,col,"200 V");
+          }
+else if((voltage[4]=='7')||(voltage[4]=='6'))
+          {
+store = "199 V";
+save = 199;
+           //Lcd_Out(row,col,"199 V");
+          }
+else if((voltage[4]=='7')||(voltage[4]=='6'))
+          {
+store = "198 V";
+save = 198;
+           //Lcd_Out(row,col,"198 V");
+          }
+else if((voltage[4]=='5')||(voltage[4]=='4'))
+          {
+store = "197 V";
+save = 197;
+          }
+else if(voltage[4]=='3')
+          {
+store = "196 V";
+save = 196;
+          }
+else if(voltage[4]=='2')
+          {
+store = "195 V";
+save = 195;
+          }
+else if(voltage[4]=='1')
+          {
+store = "194 V";
+save = 194;
+          }
+else if(voltage[4]=='0')
+          {
+store = "193 V";
+save = 193;
+          }
+        }
+else if(voltage[3]=='0')
+        {
+if((voltage[4]=='9')||(voltage[4]=='8'))
+          {
+store = "192 V";
+save = 192;
+           //Lcd_Out(row,col,"197 V");
+          }
+else if((voltage[4]=='7')||(voltage[4]=='6'))
+          {
+store = "191 V";
+save = 191;
+           //Lcd_Out(row,col,"196 V");
+          }
+else if((voltage[4]=='5')||(voltage[4]=='4'))
+          {
+store = "190 V";
+save = 190;
+           //Lcd_Out(row,col,"195 V");
+          }
+else if((voltage[4]=='3')||(voltage[4]=='2'))
+          {
+store = "189 V";
+save = 189;
+          }
+else if((voltage[4]=='1')||(voltage[4]=='0'))
+          {
+store = "190 V";
+save = 190;
+          }
+
+        }
+  }
+else if(voltage[1]=='2')
+       {
+if(voltage[3]=='9')
+        {
+if((voltage[4]=='9')||(voltage[4]=='8'))
+          {
+store = "191 V";
+save = 191;
+           //Lcd_Out(row,col,"193 V");
+          }
+else if((voltage[4]=='7')||(voltage[4]=='6'))
+          {
+store = "190 V";
+save = 190;
+           //Lcd_Out(row,col,"192 V");
+          }
+else if((voltage[4]=='5')||(voltage[4]=='4'))
+          {
+store = "189 V";
+save = 189;
+          }
+else if((voltage[4]=='3')||(voltage[4]=='2'))
+          {
+store = "188 V";
+save = 188;
+          }
+else if((voltage[4]=='1')||(voltage[4]=='0'))
+          {
+store = "187 V";
+save = 187;
+          }
+
+        }
+else if(voltage[3]=='8')
+        {
+if((voltage[4]<='9')&&(voltage[4]>='5'))
+          {
+store = "185 V";
+save = 185;
+           //Lcd_Out(row,col,"191 V");
+          }
+else if((voltage[4]<='4')&&(voltage[4]>='0'))
+          {
+store = "183 V";  //180
+save = 183;
+           //Lcd_Out(row,col,"190 V");
+          }
+        }
+else if(voltage[3]=='7')
+        {
+if((voltage[4]=='9')||(voltage[4]=='8'))
+          {
+store = "182 V";
+save = 182;
+           //Lcd_Out(row,col,"189 V");
+          }
+else if((voltage[4]=='7')||(voltage[4]=='6'))
+          {
+store = "181 V";
+save = 181;
+           //Lcd_Out(row,col,"188 V");
+          }
+else if((voltage[4]<='5')&&(voltage[4]>='3'))
+          {
+store = "180 V";
+save = 180;
+           //Lcd_Out(row,col,"187 V");
+          }
+else if((voltage[4]<='2')&&(voltage[4]>='0'))
+          {
+store = "179 V";
+save = 179;
+           //Lcd_Out(row,col,"186 V");
+          }
+        }
+else if(voltage[3]=='6')
+        {
+if((voltage[4]=='9')||(voltage[4]=='8'))
+          {
+store = "178 V";
+save = 178;
+           //Lcd_Out(row,col,"185 V");
+          }
+else if((voltage[4]=='7')||(voltage[4]=='6'))
+          {
+store = "177 V";
+save = 177;
+           //Lcd_Out(row,col,"184 V");
+          }
+else if(voltage[4]=='5')
+          {
+store = "176 V";
+save = 176;
+           //Lcd_Out(row,col,"183 V");
+          }
+else if(voltage[4]=='4')            //9
+          {
+store = "172 V";
+save = 172;
+           //Lcd_Out(row,col,"182 V");
+          }
+else if(voltage[4]=='3')
+          {
+store = "171 V";
+save = 171;
+           //Lcd_Out(row,col,"181 V");
+          }
+else if((voltage[4]=='2')||(voltage[4]=='1'))
+          {
+store = "170 V";//170
+save = 170;
+           //Lcd_Out(row,col,"180 V");
+          }
+else if(voltage[4]=='0')
+          {
+store = "169 V";
+save = 169;
+           //Lcd_Out(row,col,"179 V");
+          }
+        }
+else if(voltage[3]=='5')
+        {
+if(voltage[4]=='9')
+          {
+store = "168 V";
+save = 168;
+           //Lcd_Out(row,col,"178 V");
+          }
+else if(voltage[4]=='8')
+          {
+store = "166 V";
+save = 166;
+           //Lcd_Out(row,col,"176 V");
+          }
+else if(voltage[4]=='7')
+          {
+store = "165 V";
+save = 165;
+           //Lcd_Out(row,col,"175 V");
+          }
+else if((voltage[4]<='6')&&(voltage[4]>='4'))
+          {
+store = "164 V";
+save = 164;
+           //Lcd_Out(row,col,"174 V");
+          }
+else if((voltage[4]<='3')&&(voltage[4]>='0'))
+          {
+store = "163 V";
+save = 163;
+           //Lcd_Out(row,col,"173 V");
+          }
+        }
+else if(voltage[3]=='4')
+        {
+if((voltage[4]=='9')||(voltage[4]=='8'))
+          {
+store = "162 V";
+save = 162;
+           //Lcd_Out(row,col,"172 V");
+          }
+else if(voltage[4]=='7')
+          {
+store = "161 V";
+save = 161;
+           //Lcd_Out(row,col,"171 V");
+          }
+else if((voltage[4]=='6')||(voltage[4]=='5'))
+          {
+store = "160 V";
+save = 160;
+           //Lcd_Out(row,col,"170 V");
+          }
+else if(voltage[4]=='4')
+          {
+store = "159 V";
+save = 159;
+           //Lcd_Out(row,col,"169 V");
+          }
+else if(voltage[4]=='3')
+          {
+store = "158 V";
+save = 158;
+           //Lcd_Out(row,col,"168 V");
+          }
+else if(voltage[4]=='2')
+          {
+store = "157 V";
+save = 157;
+           //Lcd_Out(row,col,"167 V");
+          }
+else if(voltage[4]=='1')
+          {
+store = "156 V";
+save = 156;
+           //Lcd_Out(row,col,"166 V");
+          }
+else if(voltage[4]=='0')
+          {
+store = "155 V";
+save = 155;
+           //Lcd_Out(row,col,"165 V");
+          }
+        }
+       }
+else
+    {
+save=0;
+    // Lcd_Out(row,col,"out of range");
+    }
+
+  }
+void switching()
+{         if((save<=235)&&(save>225))
+          {
+          t3=0;
+          t4=0;
+          t5=0;
+          t6=1;
+          t7=0;
+          t8=0;
+          t9=0;
+          t10=0;
+          t11=0;
+          t12=0;
+buz=0;
+          }
+else if((save<=225)&&(save>215))
+          {
+          t1=0;
+          t2=0;
+          t3=0;
+          t4=0;
+          t5=0;
+          t6=0;
+          t7=1;
+          t8=0;
+          t9=0;
+          t10=0;
+          t11=0;
+          t12=0;
+
+buz=0;
+          }
+else if((save<=215)&&(save>205))
+          {
+          t1=0;
+          t2=0;
+          t3=0;
+          t4=0;
+          t5=0;
+          t6=0;
+          t7=0;
+          t8=1;
+          t9=0;
+          t10=0;
+          t11=0;
+          t12=0;
+buz=0;
+          }
+else if((save<=205)&&(save>195))
+          {
+          t1=0;
+          t2=0;
+          t3=0;
+          t4=0;
+          t5=0;
+          t6=0;
+          t7=0;
+          t8=0;
+          t9=0;
+          t10=1;
+          t11=0;
+          t12=0;
+buz=0;
+          }
+else if((save<=195)&&(save>185))
+          {
+          t1=0;
+          t2=0;
+          t3=0;
+          t4=0;
+          t5=0;
+          t6=0;
+          t7=0;
+          t8=0;
+          t9=0;
+          t10=0;
+          t11=1;
+          t12=0;
+buz=0;
+          }
+else if((save<=185)&&(save>175))
+          {
+          t1=0;
+          t2=0;
+          t3=0;
+          t4=0;
+          t5=0;
+          t6=0;
+          t7=0;
+          t8=0;
+          t9=0;
+          t10=0;
+          t11=0;
+          t12=1;
+buz=0;
+          }
+else if((save<=175)&&(save>165))
+          {
+          t1=0;
+          t2=0;
+          t3=0;
+          t4=0;
+          t5=0;
+          t6=0;
+          t7=0;
+          t8=0;
+          t9=0;
+          t10=0;
+          t11=0;
+          t12=1;
+buz=0;
+          }
+else
+          {
+          t1=0;
+          t2=0;
+          t3=0;
+          t4=0;
+          t5=0;
+          t6=0;
+          t7=0;
+          t8=0;
+          t9=0;
+          t10=0;
+          t11=0;
+          t12=0;
+buz=1;
+          }
+
+}
+void output()
+{
+if((save<=235)&&(save>225))
+          {
+
+Lcd_Out(2,4,"220V");
+
+          }
+else if((save<=225)&&(save>222))
+          {
+Lcd_Out(2,4,"222V");
+
+          }
+else if((save<=222)&&(save>218))
+          {
+Lcd_Out(2,4,"220V");
+
+          }
+else if((save<=218)&&(save>215))
+          {
+
+          }
+
+else if((save<=215)&&(save>210))
+          {
+Lcd_Out(2,4,"217V");
+
+          }
+else if((save<=210)&&(save>205))
+          {
+Lcd_Out(2,4,"215V");
+
+          }
+else if((save<=205)&&(save>200))
+          {
+Lcd_Out(2,4,"214V");
+
+          }
+else if((save<=200)&&(save>195))
+          {
+Lcd_Out(2,4,"213V");
+
+          }
+else if((save<=195)&&(save>185))
+          {
+Lcd_Out(2,4,"214V");
+
+          }
+else if((save<=185)&&(save>175))
+          {
+Lcd_Out(2,4,"217V");
+
+          }
+else if((save<=175)&&(save>165))
+          {
+Lcd_Out(2,4,"212V");
+
+          }
+else
+          {
+Lcd_Out(2,4,"000V");
+
+          }
+}
+void main()
+{
+     TRISB = 0;
+     TRISD = 0;
+     TRISC = 0;
+     TRISE =0;
+
+     ADCON1 = 0b00001011;//0b00001010; //0b00001011;
+     //TRISA = 0xFF;           // set direction to be Input
+     TRISA.RA0 =1;
+     TRISA.RA1 =1;
+     TRISA.RA2 =1;
+     TRISA.RA3 =1;
+     TRISA.RA5 =0;
+
+Lcd_Out(1,1,"Vi");//Writetext' H elloWo r ld '  in  f irst r o w
+   // Lcd_Out(1,4,"215V");
+Lcd_Out(1,9,"Ii");
+Lcd_Out(1,12,".01A");
+Lcd_Out(2,1,"Vo");
+   //   Lcd_Out(2,4,"220V");
+Lcd_Out(2,9,"Io");
+Lcd_Out(2,12,".1A");
+
+
+Lcd_Init();
+Lcd_Cmd(_LCD_CLEAR); // C le a r  d isp la y
+Lcd_Cmd(_LCD_CURSOR_OFF); // C u r so r  o f f
+
+Lcd_Out(1,1,"Vi");
+   // Lcd_Out(1,4,"215V");
+Lcd_Out(1,9,"Ii");
+Lcd_Out(1,12,".01A");
+Lcd_Out(2,1,"Vo");
+   //   Lcd_Out(2,4,"220V");
+Lcd_Out(2,9,"Io");
+Lcd_Out(2,12,".1A");
+do
+    {
+    value1 = ADC_Read(0);
+    value2 = ADC_Read(0);
+    value3 = ADC_Read(0);
+    value4 = ADC_Read(0);
+value = (value1 + value2 + value3 + value4)/4;
+
+ShowVoltage (1,1,value);
+
+range();
+switching();
+if(save==0)
+    {
+   // Lcd_Out(1,1,"V in");
+Lcd_Out(1,4,"Off ");
+    //Lcd_Out(row,col,"cutoff");
+buz=1;
+    }
+else
+    {
+    //Lcd_Cmd(_LCD_CLEAR);
+   // Lcd_Out(1,1,"V in");
+Lcd_Out(1,4,store);
+    }
+output();
+}while(1);
+}
+
